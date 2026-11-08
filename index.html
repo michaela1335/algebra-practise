@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>algebra learning</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --border: #cbd5e1;
+      --hint-bg: #fffbe6;
+      --hint-border: #ffe58f;
+      --hint-text: #873800;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 95vh;
+    }
+
+    .container {
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      max-width: 750px;
+      width: 100%;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      background: #e0e7ff;
+      color: var(--primary-dark);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 26px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-hint {
+      background: #faad14;
+      color: #fff;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      margin-bottom: 16px;
+    }
+
+    .btn-hint:hover {
+      background: #d48806;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+
+    .option-card {
+      background: #f1f5f9;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1.05rem;
+    }
+
+    .option-card:hover {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .option-card.selected {
+      border-color: var(--primary);
+      background: #dbeafe;
+      font-weight: 700;
+    }
+
+    .diagram-container {
+      text-align: center;
+      margin: 18px 0;
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px dashed var(--border);
+    }
+
+    .progress-bar-bg {
+      background: #e2e8f0;
+      height: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .progress-bar-fill {
+      background: var(--primary);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .hint-box {
+      background: var(--hint-bg);
+      border: 1px solid var(--hint-border);
+      color: var(--hint-text);
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      font-size: 0.95rem;
+    }
+
+    .explanation-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      padding: 16px;
+      border-radius: 10px;
+      margin-top: 14px;
+      font-size: 0.95rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .result-card {
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      border-left: 6px solid var(--primary);
+      background: #f8fafc;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-bar">
+    <h2 style="margin:0;">algebra learning</h2>
+    <span class="badge">NZ Curriculum Assessment</span>
+  </div>
+
+  <div id="progress-container" class="progress-bar-bg hidden">
+    <div id="progress-bar" class="progress-bar-fill"></div>
+  </div>
+
+  <!-- Screen 1: Student Setup -->
+  <div id="setup-screen">
+    <h3>Welcome to your Algebra Assessment!</h3>
+    <p>This assessment evaluates your algebra skills across Phases 2, 3, and 4 of the New Zealand Curriculum.</p>
+    
+    <div class="form-group">
+      <label for="student-name">Enter your full name:</label>
+      <input type="text" id="student-name" placeholder="e.g. Manaia Tane" required>
+    </div>
+
+    <div class="form-group">
+      <label for="year-group">Select your Year Group:</label>
+      <select id="year-group">
+        <option value="">-- Choose Year Group --</option>
+        <option value="Year 7">Year 7</option>
+        <option value="Year 8">Year 8</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="startTest()">Start Test</button>
+  </div>
+
+  <!-- Screen 2: Single Question View (No Previous Button) -->
+  <div id="question-screen" class="hidden">
+    <div id="question-number" style="font-size:0.9rem; color:#64748b; font-weight:bold; margin-bottom:6px;"></div>
+    <h3 id="question-text" style="margin-top:0;"></h3>
+
+    <div id="diagram-area" class="diagram-container hidden"></div>
+
+    <button class="btn btn-hint" onclick="toggleHint()">💡 Need a Hint?</button>
+    <div id="hint-area" class="hint-box hidden"></div>
+
+    <div id="options-container"></div>
+
+    <div class="nav-buttons">
+      <button id="btn-next" class="btn" onclick="nextQuestion()">Next Question</button>
+    </div>
+  </div>
+
+  <!-- Screen 3: Results & Curriculum Analysis -->
+  <div id="results-screen" class="hidden">
+    <h3>Assessment Results & Curriculum Analysis</h3>
+    <div id="student-summary" class="result-card"></div>
+    
+    <h4>Phase 3 Curriculum Analysis</h4>
+    <div id="phase-breakdown"></div>
+
+    <h4>Worked Solutions & Process Explanations</h4>
+    <div id="solutions-list" style="max-height: 420px; overflow-y: auto; padding-right: 10px;"></div>
+
+    <div style="margin-top:24px; text-align:center;">
+      <button class="btn" onclick="location.reload()">Retake Assessment</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzhDPKFz4qqkDLHk7-Lilt0TBHhcGGoaf_cD0_RGiOH8t8C9TBE-jKVgUmh8f13HTTJ/exec";
+
+  let currentQuestionIndex = 0;
+  let studentData = { name: "", year: "" };
+  let userAnswers = [];
+
+  const rawQuestions = [
+    // --- PHASE 2 (10 Questions - Accessible Foundation) ---
+    {
+      phase: 2,
+      question: "What number makes this equation true? [  ] + 4 = 10",
+      diagram: `<svg width="220" height="45"><rect x="10" y="8" width="40" height="30" fill="#fef08a" stroke="#ca8a04" stroke-width="2"/><text x="25" y="28" font-size="16">?</text><text x="60" y="28" font-size="20">+</text><rect x="80" y="8" width="40" height="30" fill="#dbeafe" stroke="#2563eb"/><text x="95" y="28" font-size="16">4</text><text x="130" y="28" font-size="20">=</text><text x="150" y="28" font-size="20" font-weight="bold">10</text></svg>`,
+      options: ["6", "14", "4", "5"],
+      correctIndex: 0,
+      hint: "Think: What number added to 4 gives a total of 10? You can also subtract 4 from 10.",
+      explanation: "To solve [  ] + 4 = 10, work backwards by subtracting 4 from 10: 10 - 4 = 6."
+    },
+    {
+      phase: 2,
+      question: "Look at the pattern: 5, 10, 15, 20, __. What is the next number?",
+      options: ["25", "21", "30", "22"],
+      correctIndex: 0,
+      hint: "Look at how much the numbers increase each step. Skip count by 5s!",
+      explanation: "The rule is to add 5 to the previous number: 20 + 5 = 25."
+    },
+    {
+      phase: 2,
+      question: "If ★ = 3, what is the value of ★ + 5?",
+      diagram: `<svg width="200" height="40"><text x="10" y="28" font-size="22" fill="#2563eb" font-weight="bold">★ = 3  ⇒  3 + 5 = ?</text></svg>`,
+      options: ["8", "35", "15", "2"],
+      correctIndex: 0,
+      hint: "Swap the star symbol ★ with the number 3, then add 5 to it.",
+      explanation: "Replace ★ with 3: 3 + 5 = 8."
+    },
+    {
+      phase: 2,
+      question: "What is the missing number? 12 - [  ] = 7",
+      options: ["5", "19", "6", "4"],
+      correctIndex: 0,
+      hint: "Ask yourself: How much do you need to take away from 12 to leave 7 behind?",
+      explanation: "12 - 7 = 5, so the missing number inside the box is 5."
+    },
+    {
+      phase: 2,
+      question: "Which number comes next in this pattern? 3, 6, 9, 12, __",
+      options: ["15", "13", "14", "18"],
+      correctIndex: 0,
+      hint: "Count up by 3s or add 3 to 12.",
+      explanation: "This is the 3 times table pattern. 12 + 3 = 15."
+    },
+    {
+      phase: 2,
+      question: "Sam has 2 boxes of pencils. Each box has 5 pencils. How many pencils does Sam have in total?",
+      diagram: `<svg width="240" height="50"><rect x="10" y="10" width="80" height="32" fill="#dbeafe" stroke="#2563eb"/><text x="22" y="32" font-size="14">5 pencils</text><text x="100" y="32" font-size="18">+</text><rect x="120" y="10" width="80" height="32" fill="#dbeafe" stroke="#2563eb"/><text x="132" y="32" font-size="14">5 pencils</text></svg>`,
+      options: ["10 pencils", "7 pencils", "3 pencils", "25 pencils"],
+      correctIndex: 0,
+      hint: "Draw or picture 2 boxes, each holding 5 pencils. Add 5 + 5 or multiply 2 × 5.",
+      explanation: "2 groups of 5 pencils = 5 + 5 = 10 pencils (or 2 × 5 = 10)."
+    },
+    {
+      phase: 2,
+      question: "If 🍎 + 🍎 + 🍎 = 12, how much is one 🍎 worth?",
+      options: ["4", "3", "6", "9"],
+      correctIndex: 0,
+      hint: "Three identical apples equal 12. Divide 12 equally into 3 groups.",
+      explanation: "12 ÷ 3 = 4. Each apple is worth 4."
+    },
+    {
+      phase: 2,
+      question: "What is the missing number on this balance scale? 8 + 2 = [  ] + 3",
+      options: ["7", "10", "13", "5"],
+      correctIndex: 0,
+      hint: "First figure out the left side total (8 + 2). Then make sure the right side equals that same total.",
+      explanation: "Left side = 10. For the right side to equal 10, the missing number is 10 - 3 = 7."
+    },
+    {
+      phase: 2,
+      question: "If a cat has 4 legs, how many legs do 3 cats have altogether?",
+      options: ["12 legs", "7 legs", "14 legs", "8 legs"],
+      correctIndex: 0,
+      hint: "Add 4 legs for the first cat, 4 for the second cat, and 4 for the third cat.",
+      explanation: "3 × 4 = 12 legs altogether."
+    },
+    {
+      phase: 2,
+      question: "What is another way to write 3 + 3 + 3 + 3?",
+      options: ["4 × 3", "3 + 4", "34", "4 ÷ 3"],
+      correctIndex: 0,
+      hint: "Repeated addition of the same number can be written as multiplication: (number of groups) × (group size).",
+      explanation: "There are 4 groups of 3, which is written as 4 × 3."
+    },
+
+    // --- PHASE 3 (15 Questions - Target Y7-Y8) ---
+    {
+      phase: 3,
+      question: "What is another way to write x + x + x in algebra?",
+      options: ["3x", "x³", "x + 3", "33x"],
+      correctIndex: 0,
+      hint: "When you add the letter x three times, you have 3 lots of x.",
+      explanation: "x + x + x = 3 groups of x = 3x."
+    },
+    {
+      phase: 3,
+      question: "If a jar has 'n' marbles and you add 4 more, which expression shows the total?",
+      options: ["n + 4", "4n", "n - 4", "4 / n"],
+      correctIndex: 0,
+      hint: "'Adding 4 more' to an unknown starting number n uses the plus sign.",
+      explanation: "Starting with n and adding 4 gives n + 4."
+    },
+    {
+      phase: 3,
+      question: "What does the expression 5y mean?",
+      options: ["5 times y", "5 plus y", "y take away 5", "55 y's"],
+      correctIndex: 0,
+      hint: "In algebra, putting a number right next to a letter means multiplication.",
+      explanation: "5y means 5 multiplied by y (5 × y)."
+    },
+    {
+      phase: 3,
+      question: "Simplify 4a + 2a.",
+      options: ["6a", "6a²", "8a", "42a"],
+      correctIndex: 0,
+      hint: "Since both terms have the same letter 'a', just add the numbers 4 + 2.",
+      explanation: "4a + 2a = (4 + 2)a = 6a."
+    },
+    {
+      phase: 3,
+      question: "If x = 4, what is the value of x + 7?",
+      options: ["11", "47", "28", "3"],
+      correctIndex: 0,
+      hint: "Replace the x with 4 and calculate the sum.",
+      explanation: "Substitute x = 4: 4 + 7 = 11."
+    },
+    {
+      phase: 3,
+      question: "Simplify 9m - 4m.",
+      options: ["5m", "5", "13m", "94m"],
+      correctIndex: 0,
+      hint: "Subtract the numbers in front of the letter m.",
+      explanation: "9 - 4 = 5, so 9m - 4m = 5m."
+    },
+    {
+      phase: 3,
+      question: "If k = 5, what is the value of 3k?",
+      options: ["15", "35", "8", "2"],
+      correctIndex: 0,
+      hint: "3k means 3 × k. Multiply 3 by 5.",
+      explanation: "3 × 5 = 15."
+    },
+    {
+      phase: 3,
+      question: "Which pair shows like terms that can be added together?",
+      options: ["2b and 7b", "2b and 2c", "5 and 5x", "3x and 3x²"],
+      correctIndex: 0,
+      hint: "Like terms must have the exact same variable letter.",
+      explanation: "2b and 7b both feature the variable 'b'."
+    },
+    {
+      phase: 3,
+      question: "Solve for x: x + 6 = 14.",
+      options: ["x = 8", "x = 20", "x = 7", "x = 9"],
+      correctIndex: 0,
+      hint: "Undo adding 6 by subtracting 6 from 14.",
+      explanation: "x = 14 - 6 = 8."
+    },
+    {
+      phase: 3,
+      question: "Solve for y: 2y = 10.",
+      options: ["y = 5", "y = 8", "y = 20", "y = 12"],
+      correctIndex: 0,
+      hint: "Undo multiplying by 2 by dividing 10 by 2.",
+      explanation: "y = 10 ÷ 2 = 5."
+    },
+    {
+      phase: 3,
+      question: "Simplify 3x + 2y + 4x + 5y.",
+      options: ["7x + 7y", "14xy", "12x²y²", "5x + 9y"],
+      correctIndex: 0,
+      hint: "Group matching letters together: combine 3x + 4x, and combine 2y + 5y.",
+      explanation: "(3x + 4x) + (2y + 5y) = 7x + 7y."
+    },
+    {
+      phase: 3,
+      question: "Expand 2(x + 4).",
+      options: ["2x + 8", "2x + 4", "x + 8", "6x"],
+      correctIndex: 0,
+      hint: "Multiply the 2 on the outside by BOTH terms inside the bracket: 2 × x and 2 × 4.",
+      explanation: "2 × x = 2x, and 2 × 4 = 8. Result: 2x + 8."
+    },
+    {
+      phase: 3,
+      question: "Solve for x: 2x + 3 = 11.",
+      options: ["x = 4", "x = 7", "x = 8", "x = 14"],
+      correctIndex: 0,
+      hint: "First subtract 3 from 11 to get 2x. Then divide that number by 2.",
+      explanation: "2x = 11 - 3 = 8. Then x = 8 ÷ 2 = 4."
+    },
+    {
+      phase: 3,
+      question: "If a = 3 and b = 4, evaluate 2a + b.",
+      options: ["10", "14", "9", "24"],
+      correctIndex: 0,
+      hint: "2a means 2 × 3. Calculate that first, then add 4.",
+      explanation: "(2 × 3) + 4 = 6 + 4 = 10."
+    },
+    {
+      phase: 3,
+      question: "A ticket costs $t. Aroha buys 3 tickets and gets a $2 discount. Write an expression for total cost.",
+      options: ["3t - 2", "3t + 2", "2t - 3", "t - 6"],
+      correctIndex: 0,
+      hint: "3 tickets cost 3t. A discount lowers the cost, so subtract 2.",
+      explanation: "Total cost = 3 × t minus 2 = 3t - 2."
+    },
+
+    // --- PHASE 4 (10 Questions - Extension) ---
+    {
+      phase: 4,
+      question: "Simplify x³ × x².",
+      options: ["x⁵", "x⁶", "2x⁵", "x¹"],
+      correctIndex: 0,
+      hint: "When multiplying terms with the same base letter, add the exponents together: 3 + 2.",
+      explanation: "x³ × x² = x³⁺² = x⁵."
+    },
+    {
+      phase: 4,
+      question: "Simplify a⁶ / a².",
+      options: ["a⁴", "a³", "a⁸", "a¹²"],
+      correctIndex: 0,
+      hint: "When dividing terms with the same base letter, subtract the exponents: 6 - 2.",
+      explanation: "a⁶ / a² = a⁶⁻² = a⁴."
+    },
+    {
+      phase: 4,
+      question: "Expand x(x + 4).",
+      options: ["x² + 4x", "x² + 4", "2x + 4", "5x²"],
+      correctIndex: 0,
+      hint: "Multiply x by x (which gives x²) and x by 4 (which gives 4x).",
+      explanation: "x × x = x² and x × 4 = 4x. Total: x² + 4x."
+    },
+    {
+      phase: 4,
+      question: "Expand and simplify (x + 2)(x + 3).",
+      options: ["x² + 5x + 6", "x² + 6", "2x + 5", "x² + 6x + 5"],
+      correctIndex: 0,
+      hint: "Multiply First (x·x), Outer (x·3), Inner (2·x), Last (2·3), then combine like terms.",
+      explanation: "x² + 3x + 2x + 6 = x² + 5x + 6."
+    },
+    {
+      phase: 4,
+      question: "Solve for x: 3x - 5 = 10.",
+      options: ["x = 5", "x = 3", "x = 15", "x = 1.6"],
+      correctIndex: 0,
+      hint: "First add 5 to 10 to get 3x. Then divide by 3.",
+      explanation: "3x = 15 → x = 15 ÷ 3 = 5."
+    },
+    {
+      phase: 4,
+      question: "Factorise 5x + 10 fully.",
+      options: ["5(x + 2)", "5(x + 10)", "10(x + 1)", "15x"],
+      correctIndex: 0,
+      hint: "Find the largest number that divides both 5 and 10, then put it outside brackets.",
+      explanation: "5 is the common factor: 5(x + 2)."
+    },
+    {
+      phase: 4,
+      question: "Simplify (2x²)³.",
+      options: ["8x⁶", "6x⁶", "8x⁵", "2x⁶"],
+      correctIndex: 0,
+      hint: "Cube the coefficient (2³ = 2×2×2) and multiply the powers (2 × 3 = 6).",
+      explanation: "2³ = 8, and (x²)³ = x⁶. Result: 8x⁶."
+    },
+    {
+      phase: 4,
+      question: "Solve for x: 4x + 2 = 2x + 8.",
+      options: ["x = 3", "x = 5", "x = 6", "x = 10"],
+      correctIndex: 0,
+      hint: "Subtract 2x from both sides to get 2x + 2 = 8. Then subtract 2 and divide by 2.",
+      explanation: "4x - 2x = 8 - 2 → 2x = 6 → x = 3."
+    },
+    {
+      phase: 4,
+      question: "Expand (x + 3)².",
+      options: ["x² + 6x + 9", "x² + 9", "x² + 6", "2x + 9"],
+      correctIndex: 0,
+      hint: "(x + 3)² means (x + 3)(x + 3). Expand all four multiplications.",
+      explanation: "(x + 3)(x + 3) = x² + 3x + 3x + 9 = x² + 6x + 9."
+    },
+    {
+      phase: 4,
+      question: "If a = 3 and b = 4, calculate a² + b.",
+      options: ["13", "10", "25", "49"],
+      correctIndex: 0,
+      hint: "Calculate a² first (3 × 3 = 9), then add b (4).",
+      explanation: "3² + 4 = 9 + 4 = 13."
+    }
+  ];
+
+  let processedQuestions = [];
+
+  function shuffle(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function initQuestions() {
+    processedQuestions = rawQuestions.map(q => {
+      let optionsWithOrig = q.options.map((opt, idx) => ({
+        text: opt,
+        isCorrect: idx === q.correctIndex
+      }));
+      return {
+        ...q,
+        shuffledOptions: shuffle(optionsWithOrig)
+      };
+    });
+    userAnswers = new Array(processedQuestions.length).fill(null);
+  }
+
+  function startTest() {
+    const nameInput = document.getElementById("student-name").value.trim();
+    const yearSelect = document.getElementById("year-group").value;
+
+    if (!nameInput || !yearSelect) {
+      alert("Please enter your full name and select your Year Group (Year 7 or Year 8) to start.");
+      return;
+    }
+
+    studentData.name = nameInput;
+    studentData.year = yearSelect;
+
+    initQuestions();
+
+    document.getElementById("setup-screen").classList.add("hidden");
+    document.getElementById("progress-container").classList.remove("hidden");
+    document.getElementById("question-screen").classList.remove("hidden");
+
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = processedQuestions[currentQuestionIndex];
+    document.getElementById("question-number").innerText = `Question ${currentQuestionIndex + 1} of ${processedQuestions.length} • Phase ${q.phase} Skill`;
+    document.getElementById("question-text").innerText = q.question;
+
+    const diagArea = document.getElementById("diagram-area");
+    if (q.diagram) {
+      diagArea.innerHTML = q.diagram;
+      diagArea.classList.remove("hidden");
+    } else {
+      diagArea.innerHTML = "";
+      diagArea.classList.add("hidden");
+    }
+
+    // Reset Hint
+    const hintArea = document.getElementById("hint-area");
+    hintArea.innerText = q.hint;
+    hintArea.classList.add("hidden");
+
+    const optionsContainer = document.getElementById("options-container");
+    optionsContainer.innerHTML = "";
+
+    q.shuffledOptions.forEach((opt, idx) => {
+      const optCard = document.createElement("div");
+      optCard.className = "option-card";
+      if (userAnswers[currentQuestionIndex] === idx) {
+        optCard.classList.add("selected");
+      }
+      optCard.innerText = opt.text;
+      optCard.onclick = () => selectOption(idx);
+      optionsContainer.appendChild(optCard);
+    });
+
+    const progress = ((currentQuestionIndex + 1) / processedQuestions.length) * 100;
+    document.getElementById("progress-bar").style.width = `${progress}%`;
+
+    if (currentQuestionIndex === processedQuestions.length - 1) {
+      document.getElementById("btn-next").innerText = "Submit Test";
+    } else {
+      document.getElementById("btn-next").innerText = "Next Question";
+    }
+  }
+
+  function toggleHint() {
+    const hintArea = document.getElementById("hint-area");
+    hintArea.classList.toggle("hidden");
+  }
+
+  function selectOption(index) {
+    userAnswers[currentQuestionIndex] = index;
+    renderQuestion();
+  }
+
+  function nextQuestion() {
+    if (userAnswers[currentQuestionIndex] === null) {
+      alert("Please select an answer before continuing.");
+      return;
+    }
+
+    if (currentQuestionIndex < processedQuestions.length - 1) {
+      currentQuestionIndex++;
+      renderQuestion();
+    } else {
+      finishTest();
+    }
+  }
+
+  function finishTest() {
+    let phase2Score = 0, phase3Score = 0, phase4Score = 0;
+    
+    processedQuestions.forEach((q, idx) => {
+      const selectedIndex = userAnswers[idx];
+      const isCorrect = selectedIndex !== null && q.shuffledOptions[selectedIndex].isCorrect;
+      
+      if (isCorrect) {
+        if (q.phase === 2) phase2Score++;
+        if (q.phase === 3) phase3Score++;
+        if (q.phase === 4) phase4Score++;
+      }
+    });
+
+    const totalScore = phase2Score + phase3Score + phase4Score;
+    const totalQuestions = processedQuestions.length;
+
+    // Diagnostic Standing for Phase 3 Learners
+    let phaseStatus = "";
+    if (phase3Score >= 12 && phase4Score >= 6) {
+      phaseStatus = "Exceeding Phase 3 Standards (Working at Phase 4 Level)";
+    } else if (phase3Score >= 10) {
+      phaseStatus = "Secure Phase 3 Learner (Achieving NZ Curriculum Target)";
+    } else if (phase3Score >= 6 || phase2Score >= 8) {
+      phaseStatus = "Developing Phase 3 Learner (Transitioning from Phase 2)";
+    } else {
+      phaseStatus = "Consolidating Phase 2 Foundation Skills";
+    }
+
+    document.getElementById("question-screen").classList.add("hidden");
+    document.getElementById("progress-container").classList.add("hidden");
+    document.getElementById("results-screen").classList.remove("hidden");
+
+    document.getElementById("student-summary").innerHTML = `
+      <p><strong>Student Name:</strong> ${studentData.name} | <strong>Year Group:</strong> ${studentData.year}</p>
+      <p><strong>Total Score:</strong> ${totalScore} / ${totalQuestions} (${Math.round((totalScore/totalQuestions)*100)}%)</p>
+      <p><strong>Phase 3 Standing:</strong> <span style="color:var(--primary-dark); font-weight:bold;">${phaseStatus}</span></p>
+    `;
+
+    document.getElementById("phase-breakdown").innerHTML = `
+      <ul>
+        <li><strong>Phase 2 (Foundation Concepts):</strong> ${phase2Score} / 10 correct</li>
+        <li><strong>Phase 3 (Target Intermediate Algebra):</strong> ${phase3Score} / 15 correct</li>
+        <li><strong>Phase 4 (Advanced Extension):</strong> ${phase4Score} / 10 correct</li>
+      </ul>
+    `;
+
+    const solutionsContainer = document.getElementById("solutions-list");
+    solutionsContainer.innerHTML = "";
+    
+    processedQuestions.forEach((q, idx) => {
+      const selectedIdx = userAnswers[idx];
+      const isCorrect = selectedIdx !== null && q.shuffledOptions[selectedIdx].text === q.options[q.correctIndex];
+      const userText = selectedIdx !== null ? q.shuffledOptions[selectedIdx].text : "No answer";
+      const correctText = q.options[q.correctIndex];
+
+      const solBox = document.createElement("div");
+      solBox.className = "explanation-box";
+      solBox.style.borderColor = isCorrect ? "#bbf7d0" : "#fca5a5";
+      solBox.style.background = isCorrect ? "#f0fdf4" : "#fef2f2";
+      solBox.style.color = isCorrect ? "#166534" : "#991b1b";
+
+      solBox.innerHTML = `
+        <strong>Q${idx + 1} (Phase ${q.phase}): ${q.question}</strong><br/>
+        <span>Your Answer: ${userText} ${isCorrect ? "✓" : "✗"}</span><br/>
+        ${!isCorrect ? `<span>Correct Answer: <strong>${correctText}</strong></span><br/>` : ''}
+        <div style="margin-top:5px; font-size:0.9rem;"><em>Step-by-Step Solution:</em> ${q.explanation}</div>
+      `;
+      solutionsContainer.appendChild(solBox);
+    });
+
+    // Automatically send submission data to Google Sheet Web App
+    if (BACKEND_URL) {
+      fetch(BACKEND_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          studentName: studentData.name,
+          yearGroup: studentData.year,
+          totalScore: totalScore,
+          totalQuestions: totalQuestions,
+          phase2Score: phase2Score,
+          phase3Score: phase3Score,
+          phase4Score: phase4Score,
+          curriculumPhase: phaseStatus
+        })
+      }).catch(err => console.error("Sheet submission error:", err));
+    }
+  }
+</script>
+</body>
+</html>
